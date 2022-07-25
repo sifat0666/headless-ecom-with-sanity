@@ -97,16 +97,16 @@ export const StateContext = ({children}: any) => {
                 if(cartProduct._id === product._id){
                     return({
                         ...cartProduct,
-                        quantity: cartProduct.quantity? + quantity
+                        quantity: cartProduct.quantity! + quantity
                     })
-                }
-            })
-            setCartItems(updatedCartItems?)
+                };
+            });
+            setCartItems(updatedCartItems as any)
           
         }else{
             product.quantity = quantity
 
-            setCartItems([...cartItems, {...product}]?)
+            setCartItems([...cartItems, {...product}] as any)
         }
 
         toast.success(`${qty} ${product.name} add to the cart`)
@@ -120,12 +120,12 @@ export const StateContext = ({children}: any) => {
         const newCartItems = cartItems.filter((item) => item._id !== id)
 
         if(value === 'inc') {
-        setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 } ]?);
+        setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 } ] as any);
         setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
         setTotalQuantities(prevTotalQuantities => prevTotalQuantities + 1)
         } else if(value === 'dec') {
         if (foundProduct.quantity > 1) {
-            setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1 } ]?);
+            setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1 } ] as any);
             setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
             setTotalQuantities(prevTotalQuantities => prevTotalQuantities - 1)
         }
@@ -138,7 +138,7 @@ export const StateContext = ({children}: any) => {
 
         setTotalPrice((prevTotalPrice) => prevTotalPrice -foundProduct.price * foundProduct.quantity);
         setTotalQuantities(prevTotalQuantities => prevTotalQuantities - foundProduct.quantity);
-        setCartItems(newCartItems?);
+        setCartItems(newCartItems as any);
     }
 
 
