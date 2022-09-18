@@ -1,42 +1,28 @@
 import React from 'react'
 import { AiOutlineLeft, AiOutlineMinus, AiOutlinePlus, AiOutlineShopping } from 'react-icons/ai'
-import { useStateContext } from '../context/stateContext'
+// import { useCartContext } from '../context/CartContext'
 import Link from 'next/link'
 import { urlFor } from '../lib/client'
 import { TiDeleteOutline } from 'react-icons/ti';
 import { getStripe } from '../lib/getStripe'
 import toast from 'react-hot-toast'
+import { useStateContext } from '../context/stateContext';
 
 const Cart = () => {
 
   // const cartRef = useRef()
 
-  const {totalPrice, totalQuantities, setShowCart, cartItems, toggleCartItemQuantity } = useStateContext()
+  const {
+    onAdd,
+    items,
+    totalQuantity,
+    toggleQuantity,
+    onRemove,
+    showCart,
+    setShowCart,
+    totalPrice
+   } = useStateContext()
   
-  const handleCheckout = async () => {
-    const stripe = await getStripe();
-
-    const response = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cartItems),
-    });
-
-    if(response.status === 500) return;
-
-    
-    const data = await response.json();
-
-    toast.loading('Redirecting...');
-
-    console.log('data', data)
-    console.log('data.id', data.id)
-
-    stripe.redirectToCheckout({ sessionId: data.id });
-  }
-
 
   return (
     <div>
@@ -45,12 +31,12 @@ const Cart = () => {
           <button type='button' className='cart-heading' onClick={()=> setShowCart(false)}>
             <AiOutlineLeft />
             <span className='heading'>Your Cart</span>
-            <span className="cart-num-items">({totalQuantities} items)</span>
+            <span className="cart-num-items">({totalQuantity} items)</span>
           </button>
           
           {
           
-          cartItems.length < 1 && (
+          items!.length < 1 && (
             <div className="empty-cart">
               <AiOutlineShopping size={150} />
               <h3>Your cart is empty</h3>
@@ -65,7 +51,7 @@ const Cart = () => {
 
 
           <div className="product-container">
-            {cartItems.length >= 1 && cartItems.map((item: any) => (
+            {items!.length >= 1 && items!.map((item: any) => (
               <div className="product" key={item._id}>
                 <img src={urlFor(item.image[0]).url()} className='cart-product-image' />
                 <div className="item-desc">
@@ -76,12 +62,12 @@ const Cart = () => {
                   <div className="flex bottom">
                     <div>
                       <p className="quantity-desc">
-                        <span className="minus" onClick={()=>toggleCartItemQuantity(item._id, 'dec')}><AiOutlineMinus /></span>
+                        <span className="minus" onClick={()=>toggleQuantity(item, -1)}><AiOutlineMinus /></span>
                         <span className="num">{item.quantity}</span>
-                        <span className="plus" onClick={()=>toggleCartItemQuantity(item._id, 'inc')}><AiOutlinePlus /></span>
+                        <span className="plus" onClick={()=> toggleQuantity(item, 1)}><AiOutlinePlus /></span>
                       </p>
                     </div>
-                    <button className='remove-item'>
+                    <button className='remove-item' onClick={()=>{onRemove(item)}}>
                       <TiDeleteOutline />
                     </button>
                   </div>
@@ -89,14 +75,14 @@ const Cart = () => {
               </div>
             )) }
           </div>
-          {cartItems.length >= 1 && (
+          {items!.length >= 1 && (
             <div className="cart-bottom">
               <div className="total">
                 <h3>SubTotal:</h3>
-                <h3>${totalPrice}</h3>
+                <h3>{totalPrice}</h3>
               </div>
               <div className="btn-container">
-                <button className="btn" onClick={handleCheckout}>
+                <button className="btn" onClick={()=> {}}>
                   Pay
                 </button>
               </div>
