@@ -7,8 +7,12 @@ import { TiDeleteOutline } from 'react-icons/ti';
 import { getStripe } from '../lib/getStripe'
 import toast from 'react-hot-toast'
 import { useStateContext } from '../context/stateContext';
+import axios from 'axios'
+import { useRouter } from 'next/router';
 
 const Cart = () => {
+
+  const router = useRouter()
 
   // const cartRef = useRef()
 
@@ -22,6 +26,21 @@ const Cart = () => {
     setShowCart,
     totalPrice
    } = useStateContext()
+
+   const handleCheckOut = async () =>{
+    const stripe = await getStripe()
+    const response = await fetch('http://localhost:3000/api/stripe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(items)
+
+    })
+    const data = await response.json()
+    router.push(data)
+
+   }
   
 
   return (
@@ -82,7 +101,7 @@ const Cart = () => {
                 <h3>{totalPrice}</h3>
               </div>
               <div className="btn-container">
-                <button className="btn" onClick={()=> {}}>
+                <button className="btn" onClick={handleCheckOut}>
                   Pay
                 </button>
               </div>

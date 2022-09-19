@@ -4,10 +4,8 @@ let stripePromise: any;
 
 export const getStripe = () => {
   if(!stripePromise) {
-    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PULISHABLE_KEY as string);
+    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PULISHABLE_KEY!);
   }
 
   return stripePromise;
 }
-
-// export default getStripe;

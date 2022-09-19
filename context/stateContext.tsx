@@ -44,7 +44,7 @@ type ShoppingCartContext = {
       const [totalQuantity, setTotalQuantity] = useState<number>(0)
       const [showCart, setShowCart] = useState<boolean>(false)
       const [totalPrice, setTotalPrice] = useState<number>(0)
-      console.log("🚀 ~ file: stateContext.tsx ~ line 47 ~ StateContext ~ totalPrice", totalPrice)
+    //   console.log("🚀 ~ file: stateContext.tsx ~ line 47 ~ StateContext ~ totalPrice", totalPrice)
 
   
       const onAdd = (product: IProduct, q: number) => {
