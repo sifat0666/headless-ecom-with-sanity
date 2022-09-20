@@ -28,6 +28,7 @@
     "stripe": "^8.209.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.4.3",
     "@types/cors": "^2.8.12",
     "@types/micro-cors": "^0.1.2",
     "@types/node": "18.0.3",

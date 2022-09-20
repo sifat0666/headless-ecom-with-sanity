@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar, AiOutlineVerticalRight } from 'react-icons/ai';
 
 import { client, urlFor } from '../../lib/client';
 import { Product } from '../../components';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { useStateContext } from './../../context/stateContext';
 // import { ParsedUrlQuery } from 'querystring';
+import { useRouter } from 'next/router';
+import { CartItem } from '../../context/stateContext';
 
-const ProductDetails = ({ product, products }: any) => {
+const ProductDetails = ({ product, products }: {product: any, products:any}) => {
+  
+
+
+  const {setItems, items, setShowCart} = useStateContext();
+  const router = useRouter()
   const { image, name, details, price } = product;
   const [index, setIndex] = useState(0);
   const {  onAdd, toggleQuantity } = useStateContext();
+
+  const handleCheckOut =() =>{
+    // const stripe = await getStripe()
+    onAdd(product, 1)
+    setShowCart(true)
+   }
+  
 
 
   return (
@@ -59,7 +73,7 @@ const ProductDetails = ({ product, products }: any) => {
           </div>
           <div className="buttons">
             <button type="button" className="add-to-cart" onClick={()=> onAdd(product, 1)} >Add to Cart</button>
-            <button type="button" className="buy-now" >Buy Now</button>
+            <button type="button" className="buy-now" onClick={()=>handleCheckOut()}>Buy Now</button>
           </div>
         </div>
       </div>

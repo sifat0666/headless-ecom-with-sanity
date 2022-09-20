@@ -17,8 +17,8 @@ export type IProduct = {
   quantity?: number
 }
 
-interface CartItem extends IProduct{
-    quantity: number
+export interface CartItem extends IProduct{
+    quantity?: number
 }
 
 
@@ -33,7 +33,9 @@ type ShoppingCartContext = {
     toggleQuantity: (product: IProduct, quantity: number) => void
     onRemove: (product: IProduct) => void
     totalPrice: number
-    
+    setItems: React.Dispatch<React.SetStateAction<CartItem[]>>
+    setTotalPrice: React.Dispatch<React.SetStateAction<number>>
+    setTotalQuantity: React.Dispatch<React.SetStateAction<number>>
   }
   
   const Context = createContext({} as ShoppingCartContext)
@@ -104,7 +106,7 @@ type ShoppingCartContext = {
       }
       const onRemove = (product: IProduct) => {
           const foundProduct = items.find(item => item._id === product._id)
-          setTotalQuantity(prv => prv - foundProduct!.quantity)
+          setTotalQuantity(prv => prv - foundProduct!.quantity!)
           setTotalPrice(prv => prv - foundProduct!.price)
           const newCartItems = items.filter((item) => item._id !== product._id)
           setItems(newCartItems);
@@ -132,6 +134,9 @@ type ShoppingCartContext = {
               showCart,
               setShowCart,
               totalPrice,
+              setItems,
+              setTotalPrice,
+              setTotalQuantity,
           }}>
               {children}
           </Context.Provider>
