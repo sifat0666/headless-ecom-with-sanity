@@ -29,6 +29,7 @@ const Cart = () => {
 
    const handleCheckOut = async () =>{
     const stripe = await getStripe()
+    toast.loading('Processing...')
     const response = await fetch('http://localhost:3000/api/stripe', {
       method: 'POST',
       headers: {
@@ -38,6 +39,7 @@ const Cart = () => {
 
     })
     const data = await response.json()
+
     router.push(data)
 
    }
